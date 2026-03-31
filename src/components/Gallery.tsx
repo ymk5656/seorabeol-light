@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import Image from 'next/image'
 
 const BASE = '/seorabeol-light'
 
@@ -68,7 +67,7 @@ export default function Gallery() {
           </div>
         </div>
 
-        {/* Masonry Gallery — 모든 사진 세로(2:3) 비율로 통일 */}
+        {/* Masonry Gallery — 각 사진 원본 비율 그대로 표시 */}
         <div className="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-4">
           {photos.map((photo, index) => (
             <div
@@ -84,15 +83,13 @@ export default function Gallery() {
                 marginBottom: '1rem',
               }}
             >
-              {/* 세로(2:3) 고정 비율 컨테이너 */}
-              <div className="relative group overflow-hidden" style={{ aspectRatio: '2 / 3' }}>
-                <Image
+              <div className="relative group overflow-hidden">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
                   src={photo.src}
                   alt={`소나무 사진 ${photo.id}`}
-                  fill
-                  unoptimized
-                  priority={index < 4}
-                  className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                  loading={index < 4 ? 'eager' : 'lazy'}
+                  className="w-full h-auto block transition-transform duration-500 group-hover:scale-105"
                 />
 
                 {/* Overlay */}
