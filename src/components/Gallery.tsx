@@ -108,7 +108,8 @@ export default function Gallery() {
                     src={photo.src}
                     alt={`소나무 사진 ${photo.id}`}
                     loading={index < 4 ? 'eager' : 'lazy'}
-                    className="w-full h-auto block transition-transform duration-500 group-hover:scale-103"
+                    className="w-full block transition-transform duration-500 group-hover:scale-103"
+                    style={{ maxHeight: '600px', objectFit: 'cover', objectPosition: 'center' }}
                   />
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
                     <span className="text-white/0 group-hover:text-white/80 text-sm tracking-widest transition-all duration-300"
