@@ -137,7 +137,7 @@ export default function About() {
             <div className="overflow-hidden border border-light-gray/10">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/seorabeol-light/photos/가로등 소나무2.jpg"
+                src="/seorabeol-light/photos/garoedung-sonaemu2.jpg"
                 alt="가로등 소나무"
                 className="w-full h-full object-cover"
                 style={{ maxHeight: '600px' }}

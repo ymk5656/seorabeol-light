@@ -155,12 +155,6 @@ export default function Hero() {
         style={{ animationDelay: '1.5s' }}
       >
         <a href="#gallery" className="flex flex-col items-center space-y-2 group">
-          <span
-            className="text-xs text-light-gray/60 tracking-widest group-hover:text-light-gray transition-colors"
-            style={{ fontFamily: 'var(--font-body)', letterSpacing: '0.2em' }}
-          >
-            작품
-          </span>
           <div className="w-px h-16 bg-gradient-to-b from-accent/40 to-transparent" />
         </a>
       </div>
