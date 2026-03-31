@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 const poemLines = [
   '소나무 숲 사이로',
   '빛을 찾아 걸었습니다.',
+  '',
   '숲을 감싸던',
   '짙은 안개,',
   '안개 속에서',
@@ -51,7 +52,7 @@ export default function Hero() {
       <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-accent/3 rounded-full blur-3xl animate-float-delayed" />
 
       {/* Hero Content */}
-      <div className="relative z-10 container mx-auto px-6 text-center pt-40 pb-32">
+      <div className="relative z-10 container mx-auto px-6 text-center pt-56 pb-32">
         <div
           className={`space-y-10 transition-all duration-1200 ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
@@ -93,16 +94,16 @@ export default function Hero() {
             style={{ animationDelay: '0.6s' }}
           >
             <div
-              className="text-center space-y-1"
+              className="text-center"
               style={{ fontFamily: 'var(--font-display)' }}
             >
               {poemLines.map((line, index) =>
                 line === '' ? (
-                  <div key={index} className="h-3" />
+                  <div key={index} className="h-4" />
                 ) : (
                   <p
                     key={index}
-                    className="text-base md:text-lg text-cream/85 leading-relaxed"
+                    className="text-base md:text-lg text-cream/85 leading-snug"
                   >
                     {line}
                   </p>

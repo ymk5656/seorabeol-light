@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 
 const BASE = '/seorabeol-light'
 
@@ -31,6 +31,7 @@ const photos = [
 
 export default function Gallery() {
   const [visiblePhotos, setVisiblePhotos] = useState<number[]>([])
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -44,64 +45,138 @@ export default function Gallery() {
       },
       { threshold: 0.01, rootMargin: '200px' }
     )
-
     document.querySelectorAll('[data-photo-id]').forEach((el) => observer.observe(el))
     return () => observer.disconnect()
   }, [])
 
+  const closeLightbox = useCallback(() => setLightboxIndex(null), [])
+  const prev = useCallback(() =>
+    setLightboxIndex((i) => (i !== null ? (i - 1 + photos.length) % photos.length : null)), [])
+  const next = useCallback(() =>
+    setLightboxIndex((i) => (i !== null ? (i + 1) % photos.length : null)), [])
+
+  useEffect(() => {
+    if (lightboxIndex === null) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeLightbox()
+      if (e.key === 'ArrowLeft') prev()
+      if (e.key === 'ArrowRight') next()
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [lightboxIndex, closeLightbox, prev, next])
+
   return (
-    <section id="gallery" className="section-padding bg-gradient-to-b from-black to-dark-gray">
-      <div className="container mx-auto px-6">
-        {/* Section Header */}
-        <div className="text-center mb-16">
-          <h2
-            className="text-5xl md:text-6xl font-bold mb-4 animate-fade-in-up text-cream"
-            style={{ fontFamily: 'var(--font-display)' }}
-          >
-            작품
-          </h2>
-          <div className="flex items-center justify-center gap-4 mt-4">
-            <div className="w-12 h-px bg-accent/40" />
-            <div className="w-1.5 h-1.5 rounded-full bg-accent/60" />
-            <div className="w-12 h-px bg-accent/40" />
+    <>
+      <section id="gallery" className="section-padding bg-gradient-to-b from-black to-dark-gray">
+        <div className="container mx-auto px-6">
+          {/* Section Header */}
+          <div className="text-center mb-16">
+            <h2
+              className="text-5xl md:text-6xl font-bold mb-4 animate-fade-in-up text-cream"
+              style={{ fontFamily: 'var(--font-display)' }}
+            >
+              작품
+            </h2>
+            <div className="flex items-center justify-center gap-4 mt-4">
+              <div className="w-12 h-px bg-accent/40" />
+              <div className="w-1.5 h-1.5 rounded-full bg-accent/60" />
+              <div className="w-12 h-px bg-accent/40" />
+            </div>
+          </div>
+
+          {/* 2-column masonry grid */}
+          <div className="columns-1 md:columns-2 gap-6">
+            {photos.map((photo, index) => (
+              <div
+                key={photo.id}
+                data-photo-id={photo.id}
+                onClick={() => setLightboxIndex(index)}
+                className={`break-inside-avoid transition-all duration-700 transform cursor-pointer ${
+                  visiblePhotos.includes(photo.id)
+                    ? 'opacity-100 translate-y-0'
+                    : 'opacity-0 translate-y-8'
+                }`}
+                style={{
+                  transitionDelay: `${(index % 4) * 0.08}s`,
+                  marginBottom: '1.5rem',
+                }}
+              >
+                <div className="relative group overflow-hidden">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={photo.src}
+                    alt={`소나무 사진 ${photo.id}`}
+                    loading={index < 4 ? 'eager' : 'lazy'}
+                    className="w-full h-auto block transition-transform duration-500 group-hover:scale-103"
+                  />
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
+                    <span className="text-white/0 group-hover:text-white/80 text-sm tracking-widest transition-all duration-300"
+                      style={{ fontFamily: 'var(--font-body)' }}>
+                      크게 보기
+                    </span>
+                  </div>
+                  <div className="absolute inset-0 border border-transparent group-hover:border-accent/30 transition-colors duration-300 pointer-events-none" />
+                </div>
+              </div>
+            ))}
           </div>
         </div>
+      </section>
 
-        {/* Masonry Gallery — 각 사진 원본 비율 그대로 표시 */}
-        <div className="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-4">
-          {photos.map((photo, index) => (
-            <div
-              key={photo.id}
-              data-photo-id={photo.id}
-              className={`break-inside-avoid transition-all duration-700 transform hover-lift cursor-pointer ${
-                visiblePhotos.includes(photo.id)
-                  ? 'opacity-100 translate-y-0'
-                  : 'opacity-0 translate-y-8'
-              }`}
-              style={{
-                transitionDelay: `${(index % 6) * 0.06}s`,
-                marginBottom: '1rem',
-              }}
-            >
-              <div className="relative group overflow-hidden">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={photo.src}
-                  alt={`소나무 사진 ${photo.id}`}
-                  loading={index < 4 ? 'eager' : 'lazy'}
-                  className="w-full h-auto block transition-transform duration-500 group-hover:scale-105"
-                />
+      {/* Lightbox */}
+      {lightboxIndex !== null && (
+        <div
+          className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center"
+          onClick={closeLightbox}
+        >
+          {/* Close */}
+          <button
+            onClick={closeLightbox}
+            className="absolute top-6 right-6 text-white/70 hover:text-white text-3xl leading-none z-10"
+            aria-label="닫기"
+          >
+            ✕
+          </button>
 
-                {/* Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          {/* Prev */}
+          <button
+            onClick={(e) => { e.stopPropagation(); prev() }}
+            className="absolute left-4 md:left-8 text-white/50 hover:text-white text-4xl leading-none z-10 select-none"
+            aria-label="이전"
+          >
+            ‹
+          </button>
 
-                {/* Hover Effect Border */}
-                <div className="absolute inset-0 border border-transparent group-hover:border-accent/30 transition-colors duration-300 pointer-events-none" />
-              </div>
-            </div>
-          ))}
+          {/* Photo */}
+          <div
+            className="max-h-screen max-w-screen-xl px-16 py-12 flex items-center justify-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={photos[lightboxIndex].src}
+              alt={`소나무 사진 ${photos[lightboxIndex].id}`}
+              className="max-h-[85vh] max-w-full object-contain"
+            />
+          </div>
+
+          {/* Next */}
+          <button
+            onClick={(e) => { e.stopPropagation(); next() }}
+            className="absolute right-4 md:right-8 text-white/50 hover:text-white text-4xl leading-none z-10 select-none"
+            aria-label="다음"
+          >
+            ›
+          </button>
+
+          {/* Counter */}
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/40 text-sm"
+            style={{ fontFamily: 'var(--font-body)' }}>
+            {lightboxIndex + 1} / {photos.length}
+          </div>
         </div>
-      </div>
-    </section>
+      )}
+    </>
   )
 }
