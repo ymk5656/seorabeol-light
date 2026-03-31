@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react'
 const poemLines = [
   '소나무 숲 사이로',
   '빛을 찾아 걸었습니다.',
-  '',
   '숲을 감싸던',
   '짙은 안개,',
   '안개 속에서',
