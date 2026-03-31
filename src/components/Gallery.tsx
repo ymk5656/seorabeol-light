@@ -3,37 +3,31 @@
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
 
-interface Photo {
-  id: number
-  src: string
-  height: number
-}
-
 const BASE = '/seorabeol-light'
 
-const photos: Photo[] = [
-  { id: 1,  src: `${BASE}/photos/_DSC0101.JPG`,        height: 400 },
-  { id: 2,  src: `${BASE}/photos/_DSC1507.JPG`,        height: 500 },
-  { id: 3,  src: `${BASE}/photos/_DSC1529.JPG`,        height: 450 },
-  { id: 4,  src: `${BASE}/photos/_DSC3021p.jpg`,       height: 380 },
-  { id: 5,  src: `${BASE}/photos/_DSC47901.jpg`,       height: 520 },
-  { id: 6,  src: `${BASE}/photos/_DSC7187.JPG`,        height: 400 },
-  { id: 7,  src: `${BASE}/photos/_DSC7203.JPG`,        height: 460 },
-  { id: 8,  src: `${BASE}/photos/_DSC8089-1.jpg`,      height: 500 },
-  { id: 9,  src: `${BASE}/photos/_DSC8116.JPG`,        height: 420 },
-  { id: 10, src: `${BASE}/photos/_DSC9262.JPG`,        height: 380 },
-  { id: 11, src: `${BASE}/photos/_DSC9337.JPG`,        height: 480 },
-  { id: 12, src: `${BASE}/photos/DSC_0345.JPG`,        height: 440 },
-  { id: 13, src: `${BASE}/photos/DSC_0410.JPG`,        height: 520 },
-  { id: 14, src: `${BASE}/photos/DSC_3161.JPG`,        height: 400 },
-  { id: 15, src: `${BASE}/photos/DSC_3165.JPG`,        height: 450 },
-  { id: 16, src: `${BASE}/photos/DSC_4243.JPG`,        height: 380 },
-  { id: 17, src: `${BASE}/photos/DSC_4556.JPG`,        height: 500 },
-  { id: 18, src: `${BASE}/photos/DSC_4688.JPG`,        height: 420 },
-  { id: 19, src: `${BASE}/photos/DSC_7492.jpg`,        height: 460 },
-  { id: 20, src: `${BASE}/photos/img015.jpg`,          height: 400 },
-  { id: 21, src: `${BASE}/photos/Panorama2 copy.jpg`,  height: 300 },
-  { id: 22, src: `${BASE}/photos/Panorama6.jpg`,       height: 300 },
+const photos = [
+  { id: 1,  src: `${BASE}/photos/_DSC0101.JPG` },
+  { id: 2,  src: `${BASE}/photos/_DSC1507.JPG` },
+  { id: 3,  src: `${BASE}/photos/_DSC1529.JPG` },
+  { id: 4,  src: `${BASE}/photos/_DSC3021p.jpg` },
+  { id: 5,  src: `${BASE}/photos/_DSC47901.jpg` },
+  { id: 6,  src: `${BASE}/photos/_DSC7187.JPG` },
+  { id: 7,  src: `${BASE}/photos/_DSC7203.JPG` },
+  { id: 8,  src: `${BASE}/photos/_DSC8089-1.jpg` },
+  { id: 9,  src: `${BASE}/photos/_DSC8116.JPG` },
+  { id: 10, src: `${BASE}/photos/_DSC9262.JPG` },
+  { id: 11, src: `${BASE}/photos/_DSC9337.JPG` },
+  { id: 12, src: `${BASE}/photos/DSC_0345.JPG` },
+  { id: 13, src: `${BASE}/photos/DSC_0410.JPG` },
+  { id: 14, src: `${BASE}/photos/DSC_3161.JPG` },
+  { id: 15, src: `${BASE}/photos/DSC_3165.JPG` },
+  { id: 16, src: `${BASE}/photos/DSC_4243.JPG` },
+  { id: 17, src: `${BASE}/photos/DSC_4556.JPG` },
+  { id: 18, src: `${BASE}/photos/DSC_4688.JPG` },
+  { id: 19, src: `${BASE}/photos/DSC_7492.jpg` },
+  { id: 20, src: `${BASE}/photos/img015.jpg` },
+  { id: 21, src: `${BASE}/photos/Panorama2 copy.jpg` },
+  { id: 22, src: `${BASE}/photos/Panorama6.jpg` },
 ]
 
 export default function Gallery() {
@@ -52,9 +46,7 @@ export default function Gallery() {
       { threshold: 0.01, rootMargin: '200px' }
     )
 
-    // DOM이 렌더링된 후 모든 사진 요소를 관찰
     document.querySelectorAll('[data-photo-id]').forEach((el) => observer.observe(el))
-
     return () => observer.disconnect()
   }, [])
 
@@ -76,7 +68,7 @@ export default function Gallery() {
           </div>
         </div>
 
-        {/* Masonry Gallery */}
+        {/* Masonry Gallery — 모든 사진 세로(2:3) 비율로 통일 */}
         <div className="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-4">
           {photos.map((photo, index) => (
             <div
@@ -92,16 +84,15 @@ export default function Gallery() {
                 marginBottom: '1rem',
               }}
             >
-              <div className="relative group overflow-hidden">
+              {/* 세로(2:3) 고정 비율 컨테이너 */}
+              <div className="relative group overflow-hidden" style={{ aspectRatio: '2 / 3' }}>
                 <Image
                   src={photo.src}
                   alt={`소나무 사진 ${photo.id}`}
-                  width={600}
-                  height={photo.height}
+                  fill
                   unoptimized
                   priority={index < 4}
-                  className="w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  style={{ height: `${photo.height}px` }}
+                  className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
                 />
 
                 {/* Overlay */}

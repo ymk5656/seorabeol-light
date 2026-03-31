@@ -34,7 +34,7 @@ export default function Hero() {
   }, [])
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
+    <section className="relative min-h-screen flex items-start justify-center overflow-hidden bg-black">
       {/* Background texture overlay */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-gradient-to-br from-black via-black/98 to-black/95" />
@@ -51,7 +51,7 @@ export default function Hero() {
       <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-accent/3 rounded-full blur-3xl animate-float-delayed" />
 
       {/* Hero Content */}
-      <div className="relative z-10 container mx-auto px-6 text-center pt-48 pb-32">
+      <div className="relative z-10 container mx-auto px-6 text-center pt-40 pb-32">
         <div
           className={`space-y-10 transition-all duration-1200 ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
