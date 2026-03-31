@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Image from 'next/image'
 
 interface Photo {
@@ -38,10 +38,9 @@ const photos: Photo[] = [
 
 export default function Gallery() {
   const [visiblePhotos, setVisiblePhotos] = useState<number[]>([])
-  const observerRef = useRef<IntersectionObserver | null>(null)
 
   useEffect(() => {
-    observerRef.current = new IntersectionObserver(
+    const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
@@ -50,21 +49,14 @@ export default function Gallery() {
           }
         })
       },
-      { threshold: 0.05 }
+      { threshold: 0.01, rootMargin: '200px' }
     )
 
-    return () => {
-      if (observerRef.current) {
-        observerRef.current.disconnect()
-      }
-    }
-  }, [])
+    // DOM이 렌더링된 후 모든 사진 요소를 관찰
+    document.querySelectorAll('[data-photo-id]').forEach((el) => observer.observe(el))
 
-  const observeElement = (element: HTMLElement | null) => {
-    if (element && observerRef.current) {
-      observerRef.current.observe(element)
-    }
-  }
+    return () => observer.disconnect()
+  }, [])
 
   return (
     <section id="gallery" className="section-padding bg-gradient-to-b from-black to-dark-gray">
@@ -90,14 +82,13 @@ export default function Gallery() {
             <div
               key={photo.id}
               data-photo-id={photo.id}
-              ref={observeElement}
               className={`break-inside-avoid transition-all duration-700 transform hover-lift cursor-pointer ${
                 visiblePhotos.includes(photo.id)
                   ? 'opacity-100 translate-y-0'
-                  : 'opacity-0 translate-y-10'
+                  : 'opacity-0 translate-y-8'
               }`}
               style={{
-                transitionDelay: `${(index % 8) * 0.07}s`,
+                transitionDelay: `${(index % 6) * 0.06}s`,
                 marginBottom: '1rem',
               }}
             >
@@ -108,6 +99,7 @@ export default function Gallery() {
                   width={600}
                   height={photo.height}
                   unoptimized
+                  priority={index < 4}
                   className="w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   style={{ height: `${photo.height}px` }}
                 />

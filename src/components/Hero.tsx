@@ -51,7 +51,7 @@ export default function Hero() {
       <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-accent/3 rounded-full blur-3xl animate-float-delayed" />
 
       {/* Hero Content */}
-      <div className="relative z-10 container mx-auto px-6 text-center py-32">
+      <div className="relative z-10 container mx-auto px-6 text-center pt-48 pb-32">
         <div
           className={`space-y-10 transition-all duration-1200 ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
