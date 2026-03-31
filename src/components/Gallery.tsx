@@ -29,6 +29,9 @@ const photos = [
   { id: 22, src: `${BASE}/photos/Panorama6.jpg` },
 ]
 
+const mainPhotos = photos.slice(0, 20)
+const panoramaPhotos = photos.slice(20)
+
 export default function Gallery() {
   const [visiblePhotos, setVisiblePhotos] = useState<number[]>([])
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
@@ -85,9 +88,9 @@ export default function Gallery() {
             </div>
           </div>
 
-          {/* 3-column masonry grid */}
+          {/* 3-column masonry grid — 일반 사진 20장 */}
           <div className="columns-1 md:columns-2 lg:columns-3 gap-6">
-            {photos.map((photo, index) => (
+            {mainPhotos.map((photo, index) => (
               <div
                 key={photo.id}
                 data-photo-id={photo.id}
@@ -110,6 +113,40 @@ export default function Gallery() {
                     loading={index < 4 ? 'eager' : 'lazy'}
                     className="w-full block transition-transform duration-500 group-hover:scale-103"
                     style={{ maxHeight: '600px', objectFit: 'cover', objectPosition: 'center' }}
+                  />
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
+                    <span className="text-white/0 group-hover:text-white/80 text-sm tracking-widest transition-all duration-300"
+                      style={{ fontFamily: 'var(--font-body)' }}>
+                      크게 보기
+                    </span>
+                  </div>
+                  <div className="absolute inset-0 border border-transparent group-hover:border-accent/30 transition-colors duration-300 pointer-events-none" />
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* 파노라마 2장 — 2열 전체 너비로 크게 */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+            {panoramaPhotos.map((photo, index) => (
+              <div
+                key={photo.id}
+                data-photo-id={photo.id}
+                onClick={() => setLightboxIndex(mainPhotos.length + index)}
+                className={`transition-all duration-700 transform cursor-pointer ${
+                  visiblePhotos.includes(photo.id)
+                    ? 'opacity-100 translate-y-0'
+                    : 'opacity-0 translate-y-8'
+                }`}
+                style={{ transitionDelay: `${index * 0.1}s` }}
+              >
+                <div className="relative group overflow-hidden">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={photo.src}
+                    alt={`소나무 파노라마 ${index + 1}`}
+                    loading="lazy"
+                    className="w-full block transition-transform duration-500 group-hover:scale-103"
                   />
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
                     <span className="text-white/0 group-hover:text-white/80 text-sm tracking-widest transition-all duration-300"
