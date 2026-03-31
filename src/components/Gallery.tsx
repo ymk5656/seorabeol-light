@@ -9,29 +9,31 @@ interface Photo {
   height: number
 }
 
+const BASE = '/seorabeol-light'
+
 const photos: Photo[] = [
-  { id: 1,  src: '/photos/_DSC0101.JPG',        height: 400 },
-  { id: 2,  src: '/photos/_DSC1507.JPG',        height: 500 },
-  { id: 3,  src: '/photos/_DSC1529.JPG',        height: 450 },
-  { id: 4,  src: '/photos/_DSC3021p.jpg',       height: 380 },
-  { id: 5,  src: '/photos/_DSC47901.jpg',       height: 520 },
-  { id: 6,  src: '/photos/_DSC7187.JPG',        height: 400 },
-  { id: 7,  src: '/photos/_DSC7203.JPG',        height: 460 },
-  { id: 8,  src: '/photos/_DSC8089-1.jpg',      height: 500 },
-  { id: 9,  src: '/photos/_DSC8116.JPG',        height: 420 },
-  { id: 10, src: '/photos/_DSC9262.JPG',        height: 380 },
-  { id: 11, src: '/photos/_DSC9337.JPG',        height: 480 },
-  { id: 12, src: '/photos/DSC_0345.JPG',        height: 440 },
-  { id: 13, src: '/photos/DSC_0410.JPG',        height: 520 },
-  { id: 14, src: '/photos/DSC_3161.JPG',        height: 400 },
-  { id: 15, src: '/photos/DSC_3165.JPG',        height: 450 },
-  { id: 16, src: '/photos/DSC_4243.JPG',        height: 380 },
-  { id: 17, src: '/photos/DSC_4556.JPG',        height: 500 },
-  { id: 18, src: '/photos/DSC_4688.JPG',        height: 420 },
-  { id: 19, src: '/photos/DSC_7492.jpg',        height: 460 },
-  { id: 20, src: '/photos/img015.jpg',          height: 400 },
-  { id: 21, src: '/photos/Panorama2 copy.jpg',  height: 300 },
-  { id: 22, src: '/photos/Panorama6.jpg',       height: 300 },
+  { id: 1,  src: `${BASE}/photos/_DSC0101.JPG`,        height: 400 },
+  { id: 2,  src: `${BASE}/photos/_DSC1507.JPG`,        height: 500 },
+  { id: 3,  src: `${BASE}/photos/_DSC1529.JPG`,        height: 450 },
+  { id: 4,  src: `${BASE}/photos/_DSC3021p.jpg`,       height: 380 },
+  { id: 5,  src: `${BASE}/photos/_DSC47901.jpg`,       height: 520 },
+  { id: 6,  src: `${BASE}/photos/_DSC7187.JPG`,        height: 400 },
+  { id: 7,  src: `${BASE}/photos/_DSC7203.JPG`,        height: 460 },
+  { id: 8,  src: `${BASE}/photos/_DSC8089-1.jpg`,      height: 500 },
+  { id: 9,  src: `${BASE}/photos/_DSC8116.JPG`,        height: 420 },
+  { id: 10, src: `${BASE}/photos/_DSC9262.JPG`,        height: 380 },
+  { id: 11, src: `${BASE}/photos/_DSC9337.JPG`,        height: 480 },
+  { id: 12, src: `${BASE}/photos/DSC_0345.JPG`,        height: 440 },
+  { id: 13, src: `${BASE}/photos/DSC_0410.JPG`,        height: 520 },
+  { id: 14, src: `${BASE}/photos/DSC_3161.JPG`,        height: 400 },
+  { id: 15, src: `${BASE}/photos/DSC_3165.JPG`,        height: 450 },
+  { id: 16, src: `${BASE}/photos/DSC_4243.JPG`,        height: 380 },
+  { id: 17, src: `${BASE}/photos/DSC_4556.JPG`,        height: 500 },
+  { id: 18, src: `${BASE}/photos/DSC_4688.JPG`,        height: 420 },
+  { id: 19, src: `${BASE}/photos/DSC_7492.jpg`,        height: 460 },
+  { id: 20, src: `${BASE}/photos/img015.jpg`,          height: 400 },
+  { id: 21, src: `${BASE}/photos/Panorama2 copy.jpg`,  height: 300 },
+  { id: 22, src: `${BASE}/photos/Panorama6.jpg`,       height: 300 },
 ]
 
 export default function Gallery() {
@@ -102,7 +104,7 @@ export default function Gallery() {
               <div className="relative group overflow-hidden">
                 <Image
                   src={photo.src}
-                  alt={`김연민 소나무 사진 ${photo.id}`}
+                  alt={`소나무 사진 ${photo.id}`}
                   width={600}
                   height={photo.height}
                   unoptimized

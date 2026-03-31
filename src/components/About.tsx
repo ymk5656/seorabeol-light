@@ -156,7 +156,7 @@ export default function About() {
             <div className="relative group">
               <div className="overflow-hidden border border-light-gray/10">
                 <Image
-                  src="/invitation.png"
+                  src="/seorabeol-light/invitation.png"
                   alt="소나무 사진 초대전 - 서라벌의 빛 초대장"
                   width={600}
                   height={800}
