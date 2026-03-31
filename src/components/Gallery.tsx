@@ -85,8 +85,8 @@ export default function Gallery() {
             </div>
           </div>
 
-          {/* 2-column masonry grid */}
-          <div className="columns-1 md:columns-2 gap-6">
+          {/* 3-column masonry grid */}
+          <div className="columns-1 md:columns-2 lg:columns-3 gap-6">
             {photos.map((photo, index) => (
               <div
                 key={photo.id}
