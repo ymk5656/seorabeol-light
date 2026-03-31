@@ -1,10 +1,8 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-
 const BASE = '/seorabeol-light'
 
-const photos = [
+const mainPhotos = [
   { id: 1,  src: `${BASE}/photos/_DSC0101.JPG` },
   { id: 2,  src: `${BASE}/photos/_DSC1507.JPG` },
   { id: 3,  src: `${BASE}/photos/_DSC1529.JPG` },
@@ -25,39 +23,21 @@ const photos = [
   { id: 18, src: `${BASE}/photos/DSC_4688.JPG` },
   { id: 19, src: `${BASE}/photos/DSC_7492.jpg` },
   { id: 20, src: `${BASE}/photos/img015.jpg` },
+]
+
+const panoramaPhotos = [
   { id: 21, src: `${BASE}/photos/Panorama2 copy.jpg` },
   { id: 22, src: `${BASE}/photos/Panorama6.jpg` },
 ]
 
-const mainPhotos = photos.slice(0, 20)
-const panoramaPhotos = photos.slice(20)
-
 export default function Gallery() {
-  const [visiblePhotos, setVisiblePhotos] = useState<number[]>([])
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const id = parseInt(entry.target.getAttribute('data-photo-id') || '0')
-            setVisiblePhotos((prev) => (prev.includes(id) ? prev : [...prev, id]))
-          }
-        })
-      },
-      { threshold: 0.01, rootMargin: '200px' }
-    )
-    document.querySelectorAll('[data-photo-id]').forEach((el) => observer.observe(el))
-    return () => observer.disconnect()
-  }, [])
-
   return (
     <section id="gallery" className="section-padding bg-gradient-to-b from-black to-dark-gray">
       <div className="container mx-auto px-6">
         {/* Section Header */}
         <div className="text-center mb-16">
           <h2
-            className="text-5xl md:text-6xl font-bold mb-4 animate-fade-in-up text-cream"
+            className="text-5xl md:text-6xl font-bold mb-4 text-cream"
             style={{ fontFamily: 'var(--font-display)' }}
           >
             작품
@@ -69,17 +49,10 @@ export default function Gallery() {
           </div>
         </div>
 
-        {/* 3-column masonry — 일반 사진 20장 */}
+        {/* 3-column masonry */}
         <div className="columns-1 md:columns-2 lg:columns-3 gap-6">
           {mainPhotos.map((photo, index) => (
-            <div
-              key={photo.id}
-              data-photo-id={photo.id}
-              className={`break-inside-avoid transition-all duration-700 transform ${
-                visiblePhotos.includes(photo.id) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-              }`}
-              style={{ transitionDelay: `${(index % 4) * 0.08}s`, marginBottom: '1.5rem' }}
-            >
+            <div key={photo.id} className="break-inside-avoid" style={{ marginBottom: '1.5rem' }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={photo.src}
@@ -94,19 +67,12 @@ export default function Gallery() {
 
         {/* 파노라마 2장 — 2열 전체 너비 */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-          {panoramaPhotos.map((photo, index) => (
-            <div
-              key={photo.id}
-              data-photo-id={photo.id}
-              className={`transition-all duration-700 transform ${
-                visiblePhotos.includes(photo.id) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-              }`}
-              style={{ transitionDelay: `${index * 0.1}s` }}
-            >
+          {panoramaPhotos.map((photo) => (
+            <div key={photo.id}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={photo.src}
-                alt={`소나무 파노라마 ${index + 1}`}
+                alt={`소나무 파노라마`}
                 loading="lazy"
                 className="w-full block"
               />
