@@ -104,7 +104,7 @@ export default function Hero() {
                   <p
                     key={index}
                     className="text-base md:text-lg text-cream/85"
-                    style={{ lineHeight: '1.2' }}
+                    style={{ lineHeight: '0.6' }}
                   >
                     {line}
                   </p>
